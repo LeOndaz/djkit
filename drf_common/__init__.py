@@ -1,2 +1,2 @@
 from .serializers import RecursiveSerializer
-from .viewsets import MultiPermissionViewSet
+from .viewsets import CommonViewSet
