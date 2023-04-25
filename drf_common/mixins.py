@@ -43,3 +43,21 @@ class CommonUpdateModelMixin(BaseUpdateModelMixin):
         Must return the instance saved from the serializer
         """
         return serializer.save()
+
+
+class MultiSerializerMixin:
+    input_serializer_class = None
+    output_serializer_class = None
+
+    def get_output_serializer(self):
+        """
+        Returns the output serializer
+        :return:
+        """
+        return self.output_serializer_class or self.serializer_class
+
+    def get_input_serializer(self):
+        """
+        Returns the input serializer
+        """
+        return self.input_serializer_class or self.serializer_class

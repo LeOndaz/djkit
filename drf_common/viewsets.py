@@ -3,7 +3,7 @@ from typing import Mapping
 from rest_framework import viewsets
 from rest_framework.mixins import DestroyModelMixin, ListModelMixin, RetrieveModelMixin
 
-from .mixins import CommonCreateModelMixin, CommonUpdateModelMixin
+from .mixins import CommonCreateModelMixin, CommonUpdateModelMixin, MultiSerializerMixin
 
 
 class CommonViewSet(viewsets.GenericViewSet):
@@ -12,9 +12,6 @@ class CommonViewSet(viewsets.GenericViewSet):
     permission_classes_create = []
     permission_classes_update = []
     permission_classes_destroy = []
-
-    input_serializer_class = None
-    output_serializer_class = None
 
     def get_action_perms_map(self) -> Mapping:
         """
@@ -55,18 +52,12 @@ class CommonViewSet(viewsets.GenericViewSet):
 
         return [perm() for perm in action_perms]
 
-    def get_output_serializer(self):
-        """
-        Returns the output serializer
-        :return:
-        """
-        return self.output_serializer_class or self.serializer_class
 
-    def get_input_serializer(self):
-        """
-        Returns the input serializer
-        """
-        return self.input_serializer_class or self.serializer_class
+class MultiSerializerViewSet(MultiSerializerMixin, CommonViewSet):
+    """
+    Can take in input_serializer & output_serializer in update or create. So the request body doesn't have to match
+    the response body.
+    """
 
 
 class ModelViewSet(
@@ -75,6 +66,6 @@ class ModelViewSet(
     ListModelMixin,
     CommonUpdateModelMixin,
     DestroyModelMixin,
-    CommonViewSet,
+    MultiSerializerViewSet,
 ):
     pass
