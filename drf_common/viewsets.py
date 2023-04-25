@@ -7,11 +7,11 @@ from .mixins import CommonCreateModelMixin, CommonUpdateModelMixin
 
 
 class CommonViewSet(viewsets.GenericViewSet):
-    permission_classes_retrieve = None
-    permission_classes_list = None
-    permission_classes_create = None
-    permission_classes_update = None
-    permission_classes_destroy = None
+    permission_classes_retrieve = []
+    permission_classes_list = []
+    permission_classes_create = []
+    permission_classes_update = []
+    permission_classes_destroy = []
 
     input_serializer_class = None
     output_serializer_class = None
@@ -47,16 +47,11 @@ class CommonViewSet(viewsets.GenericViewSet):
         """
         action = self.action
         action_perms_map = self.get_action_perms_map()
-        action_perms_on_klass = getattr(
-            self, "permission_classes_{}".format(action), None
-        )
 
         if action in action_perms_map:
             action_perms = action_perms_map[action]
-        elif action_perms_on_klass:
-            action_perms = action_perms_on_klass
         else:
-            action_perms = []
+            action_perms = self.permission_classes
 
         return [perm() for perm in action_perms]
 
