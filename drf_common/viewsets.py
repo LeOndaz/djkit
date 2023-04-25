@@ -3,7 +3,7 @@ from typing import Mapping
 from rest_framework import viewsets
 
 
-class MultiPermissionViewSet(viewsets.ModelViewSet):
+class CommonViewSet(viewsets.ModelViewSet):
     permission_classes_retrieve = None
     permission_classes_list = None
     permission_classes_create = None
