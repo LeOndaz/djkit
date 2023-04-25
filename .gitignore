@@ -340,4 +340,7 @@ dummy
 # LSP config files
 pyrightconfig.json
 
+# mac trash
+.DS_Store
+
 # End of https://www.toptal.com/developers/gitignore/api/django,python,pycharm

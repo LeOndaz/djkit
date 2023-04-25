@@ -73,6 +73,10 @@ instance.is_valid()
 instance.save()
 ```
 
+To install
+
+- `pip install django-rest-commons`
+
 To run the project
 
 - `pip install -r requirements.txt`
