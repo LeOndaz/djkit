@@ -1,5 +1,10 @@
 # drf-common
 
+
+## Installation
+
+- `pip install django-rest-commons`
+
 ### Examples
 
 ```python
@@ -73,9 +78,6 @@ instance.is_valid()
 instance.save()
 ```
 
-To install
-
-- `pip install django-rest-commons`
 
 To run the project
 
