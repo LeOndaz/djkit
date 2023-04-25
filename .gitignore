@@ -80,8 +80,8 @@ instance/
 # Scrapy stuff:
 .scrapy
 
-# Sphinx documentation
-docs/_build/
+# Sphinx documentation - Can be generated with html command
+docs
 
 # PyBuilder
 .pybuilder/
@@ -336,5 +336,7 @@ poetry.toml
 
 # LSP config files
 pyrightconfig.json
+
+*.rst
 
 # End of https://www.toptal.com/developers/gitignore/api/django,python,pycharm

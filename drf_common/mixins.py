@@ -46,6 +46,10 @@ class CommonUpdateModelMixin(BaseUpdateModelMixin):
 
 
 class MultiSerializerMixin:
+    """Can take in input_serializer & output_serializer in update or create. So the request body doesn't have to match
+    the response body.
+    """
+
     input_serializer_class = None
     output_serializer_class = None
 

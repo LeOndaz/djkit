@@ -7,6 +7,8 @@ from .mixins import CommonCreateModelMixin, CommonUpdateModelMixin, MultiSeriali
 
 
 class CommonViewSet(viewsets.GenericViewSet):
+    """A ViewSet that adds support for per-action permissions"""
+
     permission_classes_retrieve = []
     permission_classes_list = []
     permission_classes_create = []
@@ -53,19 +55,17 @@ class CommonViewSet(viewsets.GenericViewSet):
         return [perm() for perm in action_perms]
 
 
-class MultiSerializerViewSet(MultiSerializerMixin, CommonViewSet):
-    """
-    Can take in input_serializer & output_serializer in update or create. So the request body doesn't have to match
-    the response body.
-    """
-
-
 class ModelViewSet(
     CommonCreateModelMixin,
     RetrieveModelMixin,
     ListModelMixin,
     CommonUpdateModelMixin,
     DestroyModelMixin,
-    MultiSerializerViewSet,
+    MultiSerializerMixin,
+    CommonViewSet,
 ):
+    """
+    A replacement for `restframework.viewsets.ModelViewSet`
+    """
+
     pass
