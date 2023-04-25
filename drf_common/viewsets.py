@@ -30,8 +30,7 @@ class CommonViewSet(viewsets.GenericViewSet):
         }
 
     def get_permissions(self):
-        """
-        Tries to find the action in the return value of self.get_action_perms_map & if it's not found, it tries to get
+        """Tries to find the action in the return value of self.get_action_perms_map & if it's not found, it tries to get
         a variable named permission_classes_<action> & if there's none, the action has no permissions.
 
         Example:

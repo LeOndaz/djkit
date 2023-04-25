@@ -334,6 +334,9 @@ poetry.toml
 # ruff
 .ruff_cache/
 
+# dummy django project
+dummy
+
 # LSP config files
 pyrightconfig.json
 

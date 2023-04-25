@@ -5,6 +5,8 @@ from rest_framework.response import Response
 
 
 class CommonCreateModelMixin(BaseCreateModelMixin):
+    """Allows create to use get_input_serializer & get_output_serializer"""
+
     def create(self, request, *args, **kwargs):
         input_serializer = self.get_input_serializer(data=request.data)
         input_serializer.is_valid(raise_exception=True)
