@@ -5,7 +5,7 @@ from rest_framework.response import Response
 
 
 class CommonCreateModelMixin(BaseCreateModelMixin):
-    """Allows create to use get_input_serializer & get_output_serializer"""
+    """Allows the create action to use get_input_serializer & get_output_serializer"""
 
     def create(self, request, *args, **kwargs):
         input_serializer = self.get_input_serializer(data=request.data)
@@ -55,15 +55,21 @@ class MultiSerializerMixin:
     input_serializer_class = None
     output_serializer_class = None
 
-    def get_output_serializer(self):
+    def get_output_serializer(self, *args, **kwargs):
         """
         Returns the output serializer
         :return:
         """
-        return self.output_serializer_class or self.serializer_class
+        if self.output_serializer_class:
+            return self.output_serializer_class(*args, **kwargs)
 
-    def get_input_serializer(self):
+        return self.get_serializer(*args, **kwargs)
+
+    def get_input_serializer(self, *args, **kwargs):
         """
         Returns the input serializer
         """
-        return self.input_serializer_class or self.serializer_class
+        if self.input_serializer_class:
+            return self.input_serializer_class(*args, **kwargs)
+
+        return self.serializer_class(*args, **kwargs)
