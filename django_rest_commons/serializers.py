@@ -20,7 +20,7 @@ class EnumSerializer(serializers.BaseSerializer):
     """A serializer for enums
 
     :param enum: The enum to serialize
-    :type enum: enum.Enum
+    :type enum: instance of enum.Enum
 
     .. code-block:: python
         :caption: models.py
