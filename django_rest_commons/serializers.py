@@ -108,3 +108,22 @@ class EnumSerializer(serializers.BaseSerializer):
         raise ValidationError(
             detail=f"code {code} has no corresponding value in enum {self.enum.__class__.__name__}"
         )
+
+
+class IOSerializer(serializers.Serializer):
+    def __init__(self, input_serializer, output_serializer, **kwargs):
+        self.input_serializer = input_serializer
+        self.output_serializer = output_serializer
+
+        super().__init__(**kwargs, required=False)
+
+    def bind(self, field_name, parent):
+        self.input_serializer.bind(field_name, parent)
+        self.output_serializer.bind(field_name, parent)
+        super().bind(field_name, parent)
+
+    def to_representation(self, instance):
+        return self.output_serializer.to_representation(instance)
+
+    def to_internal_value(self, data):
+        return self.input_serializer.to_internal_value(data)
