@@ -1,5 +1,11 @@
+from inspect import isclass
+from typing import Callable, Dict
+
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
+
+from .utils import validate_row_with_serializer
 
 
 class RecursiveSerializer(serializers.Serializer):
@@ -127,3 +133,131 @@ class IOSerializer(serializers.Serializer):
 
     def to_internal_value(self, data):
         return self.input_serializer.to_internal_value(data)
+
+
+class TableUploadField(serializers.FileField):
+    default_error_messages = {
+        **serializers.FileField.default_error_messages,
+        "row": _("row {row} is invalid: {message}"),
+        "invalid_format": _("received an unexpected format={format}"),
+        "format_handler": _("the format handler raised an error"),
+    }
+
+    default_format_handlers = {
+        "csv": None,
+    }
+
+    def __init__(self, row_validator=None, **kwargs):
+        assert (
+            "write_only" not in kwargs
+        ), "serializer {} is already write_only by default".format(
+            self.__class__.__name__
+        )
+
+        assert list(
+            self.default_format_handlers.items()
+        ), "must at some format_handlers using your favourite library like pola.rs or pandas"
+        super().__init__(**kwargs, write_only=True)
+        self.row_validator = row_validator
+        self.allowed_upload_formats = self.default_format_handlers.keys()
+
+    def get_row_validator(self):
+        if isinstance(self.row_validator, str):
+            method = getattr(self.parent, self.row_validator, None)
+
+            if method is None:
+                raise AssertionError(
+                    "method {} doesn't exist on serializer {}".format(
+                        self.row_validator,
+                        self.parent.__class__.__name__,
+                    )
+                )
+
+            return method
+
+        if isclass(self.row_validator) and not issubclass(
+            self.row_validator, serializers.Serializer
+        ):
+            raise ValidationError(
+                "validate_row accepts only subclasses of rest_framework.serializers.Serializer"
+            )
+
+        if isclass(self.row_validator) and issubclass(
+            self.row_validator, serializers.Serializer
+        ):
+            return validate_row_with_serializer(self.row_validator, self.context)
+
+        if self.row_validator is None:
+            method_name = "validate_{}_row".format(self.field_name)
+            return getattr(self.parent, method_name, None)
+
+        raise AssertionError(
+            "validate_row can only be of types str, callable or a subclass of serializers.Serializer"
+            " but got={}".format(type(self.row_validator).__name__)
+        )
+
+    def bind(self, field_name, parent):
+        super().bind(field_name, parent)
+        self.row_validator = self.get_row_validator()
+
+    def fail(self, key, **kwargs):
+        if key == "row":
+            assert "row" in kwargs, "must pass cell in kwargs when key=row"
+            assert "message" in kwargs, "must pass a message for errors in rows"
+
+            row = kwargs["row"]
+            message = kwargs["message"]
+
+            raise ValidationError(
+                {
+                    "original_exception": message,
+                    "message": "Error in cell",
+                    "row": row,
+                },
+                code="TABLE_ROW_ERROR",
+            )
+
+        return super().fail(key, **kwargs)
+
+    def get_format_handlers(self) -> Dict[str, Callable]:
+        if not any(self.default_format_handlers.values()):
+            raise ValueError("{}.get_format_handlers returned no handlers")
+
+        return self.default_format_handlers
+
+    def _format_handler(self, file):
+        file_name = file.name
+        upload_format = file_name.rsplit(".")[1]
+        format_handler = self.get_format_handlers().get(upload_format)
+
+        try:
+            return format_handler(file)
+        except Exception as e:
+            self.fail("format_handler", message=str(e))
+
+    def to_internal_value(self, file):
+        super().to_internal_value(file)
+
+        table_object = self._format_handler(file)
+
+        if self.row_validator:
+            for i, row in table_object.iterrows():
+                try:
+                    new_value = self.row_validator(row, i, table_object)
+                except serializers.ValidationError as e:
+                    raise ValidationError(
+                        {
+                            "field_errors": e.detail,
+                            "row": i + 1,
+                        }
+                    )
+
+                if new_value is not None:
+                    table_object.iloc[i] = new_value
+
+        return table_object
+
+    def to_representation(self, value):
+        raise ValidationError(
+            "{} is a write_only field".format(self.__class__.__name__)
+        )
