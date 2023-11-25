@@ -134,6 +134,13 @@ class IOSerializer(serializers.Serializer):
     def to_internal_value(self, data):
         return self.input_serializer.to_internal_value(data)
 
+    def get_fields(self):
+        # being used as output
+        if self.data:
+            return self.output_serializer.get_fields()
+
+        return self.input_serializer.get_fields()
+
 
 class TableUploadField(serializers.FileField):
     default_error_messages = {
