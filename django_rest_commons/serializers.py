@@ -17,9 +17,9 @@ class RecursiveSerializer(serializers.Serializer):
         :return: the data from that serializer
         """
         if isinstance(self.parent, serializers.ListSerializer):
-            return self.parent.parent.__class__(value).data
+            return self.parent.parent.to_representation(value)
 
-        return self.parent.__class__(value).data
+        return self.parent.to_representation(value)
 
 
 class EnumSerializer(serializers.BaseSerializer):
