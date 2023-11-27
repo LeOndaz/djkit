@@ -117,6 +117,17 @@ class EnumSerializer(serializers.BaseSerializer):
 
 
 class IOSerializer(serializers.Serializer):
+    """
+    Input/Output serializer is used when having different formats for request/response.
+
+    user_serializer = IOSerializer(
+            input_serializer=PrimaryKeyRelatedField(),
+            output_serializer=UserSerializer()
+        )
+
+    In the response, you'll find the user object, but in the request, you'll only send the PK.
+    """
+
     def __init__(self, input_serializer, output_serializer, **kwargs):
         self.input_serializer = input_serializer
         self.output_serializer = output_serializer
@@ -143,6 +154,31 @@ class IOSerializer(serializers.Serializer):
 
 
 class TableUploadField(serializers.FileField):
+    """
+    A field for handling TabularUploads in any library like Pandas or Pola.rs.
+
+    Usage:
+
+    class MyTableUploadField(TableUploadField):
+        default_format_handlers = {
+            "csv": pd.read_csv,
+        }
+
+    And usage as expected
+
+    class MySerializerNeedingTableUpload(serializers.Serializer):
+        my_csv = MyTableUploadField(required=True)
+
+        def create(self, validated_data):
+            dataframe = validated_data['my_csv']
+
+        def validate_my_csv_row(self, row, index, table_df):
+            # process row as needed and return it, or raise!
+            # if you return None, return value won't be used.
+
+            return row
+    """
+
     default_error_messages = {
         **serializers.FileField.default_error_messages,
         "row": _("row {row} is invalid: {message}"),
