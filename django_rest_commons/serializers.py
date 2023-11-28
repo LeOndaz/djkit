@@ -147,7 +147,7 @@ class IOSerializer(serializers.Serializer):
 
     def get_fields(self):
         # being used as output
-        if self.data:
+        if hasattr(self, "initial_data"):
             return self.output_serializer.get_fields()
 
         return self.input_serializer.get_fields()

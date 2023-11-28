@@ -18,9 +18,6 @@ class CommonCreateModelMixin(BaseCreateModelMixin):
             output_serializer.data, status=status.HTTP_201_CREATED, headers=headers
         )
 
-    def perform_create(self, serializer):
-        return serializer.save()
-
 
 class CommonUpdateModelMixin(BaseUpdateModelMixin):
     def update(self, request, *args, **kwargs):
