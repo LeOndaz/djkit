@@ -10,6 +10,7 @@ from rest_framework import serializers
 
 from commonkit.private import errors
 from commonkit.private.utils import subject_to_change, validate_row_with_serializer
+from commonkit.utils import Obfuscator
 
 
 class RecursiveSerializer(serializers.Serializer):
@@ -20,9 +21,10 @@ class RecursiveSerializer(serializers.Serializer):
         :param value: A serializer object, maybe a ListSerializer or a Serializer
         :return: the data from that serializer
         """
-        assert self.parent is not None, errors.serializer_cant_be_used_independently(
-            self
-        )
+        if self.parent is None:
+            raise serializers.ValidationError(
+                errors.serializer_cant_be_used_independently(self)
+            )
 
         if isinstance(self.parent, serializers.ListSerializer):
             return self.parent.parent.to_representation(value)
@@ -464,3 +466,27 @@ class EncryptedField(serializers.CharField):
 
 class HashedField(serializers.CharField):
     """to be implemented"""
+
+
+class ObfuscatedFieldMixin:
+    obfuscator = None
+
+    def __init__(self, **kwargs):
+        self.cutoff = kwargs.pop("cutoff", 4)
+        self.from_end = kwargs.pop("from_end", True)
+        self.char = kwargs.pop("char", "*")
+        super().__init__(**kwargs)
+
+    def to_representation(self, value):
+        return self.obfuscator.obfuscate(
+            value, cutoff=self.cutoff, from_end=self.from_end, char=self.char
+        )
+
+
+class ObfuscatedCharField(ObfuscatedFieldMixin, serializers.CharField):
+    pass
+
+
+class ObfuscatedEmailField(ObfuscatedFieldMixin, serializers.EmailField):
+    def to_representation(self, value):
+        return Obfuscator.email(value)
