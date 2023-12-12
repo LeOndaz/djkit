@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from django_rest_commons import EnumSerializer
+from commonkit.rest_framework.serializers import EnumSerializer, RecursiveSerializer
 
 from . import models
 
@@ -16,3 +16,11 @@ class HumanSerializer(serializers.ModelSerializer):
             "level",
             "military_status",
         ]
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    parent = RecursiveSerializer()
+
+    class Meta:
+        model = models.Category
+        fields = "__all__"

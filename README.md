@@ -3,7 +3,7 @@
 
 ## Installation
 
-- `pip install django-rest-commons`
+- `pip install commonkit`
 
 ### Examples
 
@@ -34,8 +34,8 @@ class Human(models.Model):
 ```python
 # serializers.py
 from rest_framework import serializers
-from drf_common import EnumSerializer
-from . import models
+from commonkit.rest_framework.serializers import EnumSerializer
+from example.core import models
 
 
 class HumanSerializer(serializers.ModelSerializer):
@@ -55,8 +55,8 @@ class HumanSerializer(serializers.ModelSerializer):
 
 ```python
 # wherever.py
-from .serializers import HumanSerializer
-from .models import Human
+from example.core.serializers import HumanSerializer
+from example.core.models import Human
 
 human = Human.objects.find(id=1)
 serializer = HumanSerializer(human)  # level = BEGINNER, military_status = EXEMPTED
@@ -66,7 +66,7 @@ serializer = HumanSerializer(human)  # level = BEGINNER, military_status = EXEMP
 
 ```python
 # wherever.py
-from .serializers import HumanSerializer
+from example.core.serializers import HumanSerializer
 
 data = {
     "level": "BEGINNER",

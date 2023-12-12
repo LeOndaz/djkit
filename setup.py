@@ -1,11 +1,14 @@
 from distutils.core import setup
 
 setup(
-    name="django_rest_commons",
+    name="commonkit",
     version="1.0.6",
     description="Django rest framework common utilities",
     author="LeOndaz",
     author_email="ahmeddark369@gmail.com",
-    url="https://github.com/LeOndaz/drf-rest-commons",
-    packages=["django_rest_commons"],
+    url="https://github.com/LeOndaz/commonkit",
+    packages=["commonkit"],
+    platforms=["*"],
+    license="MIT",
+    fullname="Python CommonKit",
 )

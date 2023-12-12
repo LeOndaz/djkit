@@ -15,3 +15,14 @@ class Human(models.Model):
     name = models.CharField(max_length=128)
     level = models.IntegerField(choices=Level.choices)
     military_status = models.CharField(choices=MilitaryStatus.choices, max_length=128)
+    email = models.EmailField()
+
+
+class Pet(models.Model):
+    name = models.CharField(max_length=256)
+    human = models.ForeignKey(Human, on_delete=models.CASCADE, related_name="pets")
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=256)
+    parent = models.ForeignKey("self", on_delete=models.CASCADE, blank=True, null=True)

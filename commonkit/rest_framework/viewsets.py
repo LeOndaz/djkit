@@ -1,12 +1,16 @@
 from typing import Mapping
 
 from rest_framework import viewsets
-from rest_framework.mixins import DestroyModelMixin, ListModelMixin, RetrieveModelMixin
+from rest_framework.mixins import (
+    CreateModelMixin,
+    DestroyModelMixin,
+    ListModelMixin,
+    RetrieveModelMixin,
+    UpdateModelMixin,
+)
 
-from .mixins import CommonCreateModelMixin, CommonUpdateModelMixin, MultiSerializerMixin
 
-
-class CommonViewSet(viewsets.GenericViewSet):
+class GenericViewSet(viewsets.GenericViewSet):
     """A ViewSet that adds support for per-action permissions"""
 
     permission_classes_retrieve = []
@@ -14,6 +18,9 @@ class CommonViewSet(viewsets.GenericViewSet):
     permission_classes_create = []
     permission_classes_update = []
     permission_classes_destroy = []
+
+    # fallback, permissions for all actions
+    permission_classes = []
 
     def get_action_perms_map(self) -> Mapping:
         """
@@ -55,13 +62,12 @@ class CommonViewSet(viewsets.GenericViewSet):
 
 
 class ModelViewSet(
-    CommonCreateModelMixin,
+    CreateModelMixin,
     RetrieveModelMixin,
     ListModelMixin,
-    CommonUpdateModelMixin,
+    UpdateModelMixin,
     DestroyModelMixin,
-    MultiSerializerMixin,
-    CommonViewSet,
+    GenericViewSet,
 ):
     """
     A replacement for `restframework.viewsets.ModelViewSet`
