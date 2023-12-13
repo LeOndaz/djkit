@@ -8,7 +8,6 @@ class JSONRenderer(BaseJsonRenderer):
         return data
 
     def render_errors(self, data, accepted_media_type=None, renderer_context=None):
-        response = renderer_context["response"]
         field_errors = {}
         non_field_errors = []
 

@@ -13,7 +13,7 @@ POLARS_FIXTURES = ["csv_file", "xlsx_file", "json_file"]
 PANDAS_FIXTURES = [
     "csv_file",
     "xlsx_file",
-    "json_file"
+    "json_file",
     # "xml_file",
     # "sql_file",
 ]
