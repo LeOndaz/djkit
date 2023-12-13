@@ -12,6 +12,9 @@ import pytest
 from core.models import Category, Human
 from django.core.files.uploadedfile import SimpleUploadedFile
 from faker import Faker
+from rest_framework.test import APIClient
+
+from commonkit.rest_framework.renderers import JSONRenderer
 
 mimetypes.init()
 
@@ -158,3 +161,16 @@ def categories():
 @pytest.fixture
 def subcategories():
     return Category.objects.filter(parent__isnull=False)
+
+
+@pytest.fixture
+def api(request):
+    if getattr(request, "param", None) == "improved_json_renderer":
+
+        class NewApiClient(APIClient):
+            default_format = "json"
+            renderer_classes_list = [JSONRenderer]
+
+        return NewApiClient()
+
+    return APIClient()

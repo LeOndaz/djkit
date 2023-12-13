@@ -469,7 +469,7 @@ class HashedField(serializers.CharField):
 
 
 class ObfuscatedFieldMixin:
-    obfuscator = None
+    obfuscator = Obfuscator
 
     def __init__(self, **kwargs):
         self.cutoff = kwargs.pop("cutoff", 4)
@@ -489,4 +489,4 @@ class ObfuscatedCharField(ObfuscatedFieldMixin, serializers.CharField):
 
 class ObfuscatedEmailField(ObfuscatedFieldMixin, serializers.EmailField):
     def to_representation(self, value):
-        return Obfuscator.email(value)
+        return self.obfuscator.email(value)
