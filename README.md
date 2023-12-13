@@ -1,4 +1,4 @@
-# drf-common
+# CommonKit
 
 ## Installation
 
