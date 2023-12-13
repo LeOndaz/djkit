@@ -1,7 +1,7 @@
 import base64
 import typing
 from collections import abc
-from enum import Enum, EnumType
+from enum import Enum
 from inspect import isclass
 from pathlib import Path
 
@@ -101,7 +101,7 @@ class EnumSerializer(serializers.BaseSerializer):
 
     """
 
-    def __init__(self, enum: EnumType, *args, **kwargs):
+    def __init__(self, enum, *args, **kwargs):
         super().__init__(*args, **kwargs)
         assert issubclass(enum, Enum), errors.must_pass_enum_to_enum_serializer(enum)
         self.enum = enum
