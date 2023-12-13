@@ -12,7 +12,7 @@
 from commonkit.utils import Obfuscator
 
 Obfuscator.email("abcdqweqwe@test.com") # abcdq****@test.com'
-Obfuscator.obfuscate('my_super_confidential_secret')  # 'my_super_confidential_s****'
+Obfuscator.obfuscate('my_super_confidential_secret')  # 'my_super_confidential_s*****'
 
 ```
 
