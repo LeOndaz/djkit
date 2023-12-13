@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "commonkit"
-version = "1.0.7"
+version = "1.0.8"
 description = "A library for handling common stuff in Python"
 authors = ["leondaz <ahmeddark369@gmail.com>"]
 license = "MIT"
