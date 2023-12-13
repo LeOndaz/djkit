@@ -19,13 +19,14 @@ class Obfuscator:
             return char * len(s)
 
         if from_end:
+            # note that reverse indices need to be incremented in slicing
             index = -cutoff - 1
         else:
             index = cutoff
 
         after_cutoff, before_cutoff = s[index:], s[:index]
         return (
-            (before_cutoff + cutoff * char)
+            (before_cutoff + (cutoff + 1) * char)
             if from_end
             else (char * cutoff + after_cutoff)
         )

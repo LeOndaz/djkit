@@ -478,6 +478,7 @@ class ObfuscatedFieldMixin:
         super().__init__(**kwargs)
 
     def to_representation(self, value):
+        value = super().to_representation(value)
         return self.obfuscator.obfuscate(
             value, cutoff=self.cutoff, from_end=self.from_end, char=self.char
         )
