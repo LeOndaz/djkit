@@ -32,20 +32,20 @@ class NonDatabaseField(Field):
     prevent_kwargs = ["primary_key", "blank", "editable", "unique"]
 
     def __init__(self, *args, **kwargs):
-        for kwarg_name in self.prevent_kwargs:
-            passed_kwargs = []
+        passed_kwargs = []
 
+        for kwarg_name in self.prevent_kwargs:
             if kwargs.get(kwarg_name, None):
                 passed_kwargs.append(kwarg_name)
 
-            if passed_kwargs:
-                raise exceptions.ValidationError(
-                    "parameters [%s] not allowed in %s"
-                    % (
-                        ", ".join(passed_kwargs),
-                        self.__class__.__name__,
-                    )
+        if passed_kwargs:
+            raise exceptions.ValidationError(
+                "parameters [%s] not allowed in %s"
+                % (
+                    ", ".join(passed_kwargs),
+                    self.__class__.__name__,
                 )
+            )
 
         super().__init__(*args, **kwargs, primary_key=False)
 
