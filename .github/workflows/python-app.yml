@@ -35,6 +35,10 @@ jobs:
       - name: Test with pytest
         run: |
           poetry run pytest .
+  release:
+    runs-on: ubuntu-latest
+    if: github.ref_name == 'tag' || github.event.action == 'published'
+    steps:
       - name: Build wheel
         run: python -m build
       - name: Publish package on PyPi
