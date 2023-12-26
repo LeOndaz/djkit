@@ -1,8 +1,8 @@
-import numbers
+import decimal
 from dataclasses import dataclass
 
 
 @dataclass
 class Money:
-    amount: numbers.Integral
+    amount: decimal.Decimal
     currency: str

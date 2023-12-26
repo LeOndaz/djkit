@@ -1,6 +1,7 @@
 import decimal
 import numbers
 from functools import total_ordering
+from typing import Union
 
 from django.core import exceptions, validators
 from django.db.models import Field
@@ -85,7 +86,7 @@ class MoneyField(NonDatabaseField):
             return Money(amount, currency)
         return self.get_default()
 
-    def __set__(self, instance, value: Money | numbers.Number):
+    def __set__(self, instance, value: Union[Money, numbers.Number]):
         default = self.get_default()
         currency = default.currency if default else None
 
