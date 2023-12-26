@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from commonkit.rest_framework.serializers import EnumSerializer, RecursiveSerializer
+from djkit.rest_framework.serializers import EnumSerializer, RecursiveSerializer
 
 from . import models
 

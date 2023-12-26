@@ -23,7 +23,7 @@ class TableUploadField(BaseTableUploadField):
         "xml": pd.read_xml,
     }
 
-    def update_row(self, table_object, index, new_row):
+    def update_row(self, table_object: "pd.DataFrame", index, new_row: "pd.Series"):
         table_object.iloc[index] = new_row
 
 

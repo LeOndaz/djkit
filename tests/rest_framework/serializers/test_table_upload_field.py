@@ -2,11 +2,9 @@ import pandas as pd
 import polars as pl
 import pytest
 
-from commonkit.rest_framework.pandas import PandasTableUploadField
-from commonkit.rest_framework.polars import PolarsTableUploadField
-from commonkit.rest_framework.serializers import (
-    TableUploadField as BaseTableUploadField,
-)
+from djkit.rest_framework.pandas import PandasTableUploadField
+from djkit.rest_framework.polars import PolarsTableUploadField
+from djkit.rest_framework.serializers import TableUploadField as BaseTableUploadField
 
 POLARS_FIXTURES = ["csv_file", "xlsx_file", "json_file"]
 

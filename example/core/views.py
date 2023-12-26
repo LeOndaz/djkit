@@ -4,9 +4,9 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from commonkit.rest_framework.renderers import JSONRenderer
-from commonkit.rest_framework.serializers import DebugSerializer, IOSerializer
-from commonkit.rest_framework.viewsets import ModelViewSet
+from djkit.rest_framework.renderers import JSONRenderer
+from djkit.rest_framework.serializers import DebugSerializer, IOSerializer
+from djkit.rest_framework.viewsets import ModelViewSet
 
 from .models import Human
 from .serializers import HumanSerializer

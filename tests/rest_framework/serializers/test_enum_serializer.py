@@ -2,7 +2,7 @@ import pytest
 from core.models import Human
 from rest_framework import serializers
 
-from commonkit.rest_framework.serializers import EnumSerializer
+from djkit.rest_framework.serializers import EnumSerializer
 
 
 @pytest.mark.xfail

@@ -1,17 +1,17 @@
-# CommonKit
+# DjKit
 
 ## Installation
 
-- `pip install commonkit`
+- `pip install djkit`
 
 ## Examples
 
 #### Obfuscation
 
 ```python
-from commonkit.utils import Obfuscator
+from djkit.utils import Obfuscator
 
-Obfuscator.email("abcdqweqwe@test.com") # abcdq****@test.com'
+Obfuscator.email("abcdqweqwe@test.com")  # abcdq****@test.com'
 Obfuscator.obfuscate('my_super_confidential_secret')  # 'my_super_confidential_s*****'
 
 ```
@@ -45,7 +45,7 @@ class Human(models.Model):
 ```python
 # serializers.py
 from rest_framework import serializers
-from commonkit.rest_framework.serializers import EnumSerializer
+from djkit.rest_framework.serializers import EnumSerializer
 from example.core import models
 
 
@@ -95,7 +95,7 @@ instance.save()
 
 ```python
 import pandas as pd
-from commonkit.rest_framework.pandas import TableUploadField  # or PandasTableUploadField
+from djkit.rest_framework.pandas import TableUploadField  # or PandasTableUploadField
 from rest_framework import serializers
 
 
@@ -120,7 +120,7 @@ class MySerializer(serializers.ModelSerializer):
 
 ```python
 import polars as pl
-from commonkit.rest_framework.polars import TableUploadField  # or PolarsTableUploadField
+from djkit.rest_framework.polars import TableUploadField  # or PolarsTableUploadField
 from rest_framework import serializers
 
 
@@ -142,7 +142,7 @@ class MySerializer(serializers.ModelSerializer):
 - TableUploadField is easily extended, use your own library if you want
 
 ```python
-from commonkit.rest_framework.serializers import TableUploadField as BaseTableUploadField
+from djkit.rest_framework.serializers import TableUploadField as BaseTableUploadField
 
 
 def read_csv(source):
@@ -185,8 +185,9 @@ can_parse_csv = field.is_allowed_format('obj') # False
 #### Custom kwargs for handlers in TableFieldUpload
 
 ```python
-from commonkit.rest_framework.pandas import PandasTableUploadField
+from djkit.rest_framework.pandas import PandasTableUploadField
 import pandas as pd
+
 
 class Serializer(...):
     pandas_file = PandasTableUploadField(handler_kwargs={
@@ -204,14 +205,14 @@ class Serializer(...):
 
 - The same logic applies to all `TableUploadField` subclasses.
 
-- commonkit provides easily methods for overriding most of the logic.
+- djkit provides easily methods for overriding most of the logic.
 - If you want a field that does aggregation or something, override `process_table` on `TableUploadField`
 
 
 #### Obfuscation
 
 ```python
-from commonkit.rest_framework.serializers import ObfuscatedCharField, ObfuscatedEmailField, ObfuscatedFieldMixin
+from djkit.rest_framework.serializers import ObfuscatedCharField, ObfuscatedEmailField, ObfuscatedFieldMixin
 
 
 class MySerializer(...):
@@ -230,7 +231,7 @@ class MyCustomObfuscatedApiKeyField(ObfuscatedFieldMixin, MyApiKeyField):
 
 REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": [
-        "commonkit.rest_framework.renderers.JSONRenderer"
+        "djkit.rest_framework.renderers.JSONRenderer"
     ]
 }
 ```

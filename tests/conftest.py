@@ -14,7 +14,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from faker import Faker
 from rest_framework.test import APIClient
 
-from commonkit.rest_framework.renderers import JSONRenderer
+from djkit.rest_framework.renderers import JSONRenderer
 
 mimetypes.init()
 

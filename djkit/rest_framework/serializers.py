@@ -8,9 +8,9 @@ from pathlib import Path
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
-from commonkit.private import errors
-from commonkit.private.utils import subject_to_change, validate_row_with_serializer
-from commonkit.utils import Obfuscator
+from djkit.private import errors
+from djkit.private.utils import subject_to_change, validate_row_with_serializer
+from djkit.utils import Obfuscator
 
 
 class RecursiveSerializer(serializers.Serializer):
